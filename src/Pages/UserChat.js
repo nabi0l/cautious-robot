@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { generateResponse } from "../config/gemini";
@@ -167,9 +168,10 @@ const UserChat = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-md p-4">
+      {/* Top Bar */}
+      <div className="bg-white shadow-md p-4 fixed w-full top-0 z-40 ">
         <div className="flex justify-between items-center">
-          <div className="left relative">
+          <div className="relative z-50">
             <Hamburger toggled={isSideBarOpen} toggle={toggleSideBar} />
             {isSideBarOpen && (
               <div className="absolute left-0 top-12 z-50">
@@ -177,81 +179,74 @@ const UserChat = () => {
               </div>
             )}
           </div>
-          <h1 className="text-xl font-semibold">User Chat</h1>
-          <div className="right">
-            <FaUserCircle className="text-2xl" />
-          </div>
+          <h1 className="text-lg sm:text-xl font-semibold">User  Chat</h1>
+          <FaUserCircle className="text-2xl" />
         </div>
-
-        <div className="max-w-4xl mx-auto p-4">
-          <div className="bg-white rounded-lg shadow-md p-4 mb-4 h-[calc(100vh-200px)] overflow-y-auto">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`mb-4 flex ${
-                  message.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {message.sender === "user" ? (
-                  <>
-                    <div className="max-w-[70%] rounded-lg p-3 bg-blue-500 text-white">
-                      <MessageContent text={message.text} sender={message.sender} />
-                      <span className="text-xs opacity-70 mt-1 block">
-                        {message.timestamp}
-                      </span>
-                    </div>
-                    <div className="flex-shrink-0 ml-2">
-                      <FaUserCircle className="text-2xl text-blue-500" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex-shrink-0 mr-2">
-                      <FaRobot className="text-2xl text-gray-600" />
-                    </div>
-                    <div className="max-w-[70%] rounded-lg p-3 bg-gray-100 text-gray-800">
-                      <MessageContent text={message.text} sender={message.sender} />
-                      <span className="text-xs opacity-70 mt-1 block">
-                        {message.timestamp}
-                      </span>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-
-            {isLoading && (
-              <div className="flex items-start gap-2">
-                <div className="flex-shrink-0">
-                  <FaRobot className="text-2xl text-gray-600" />
-                </div>
-                <div className="bg-gray-100 rounded-lg p-3 max-w-[70%]">
-                  <p className="text-sm text-gray-600">Thinking...</p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <form onSubmit={handleSendMessage} className="flex gap-2">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              className={`bg-blue-500 text-white p-3 rounded-lg transition-colors ${
-                isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+      </div>
+  
+      {/* Main Chat Area */}
+      <div className="pt-24 px-4 sm:px-8 max-w-5xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-4 mb-4 sm:p-6 overflow-y-auto min-h-[600px] sm:h-[calc(100vh-220px)]">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`mb-4 flex flex-wrap ${
+                message.sender === "user" ? "justify-end" : "justify-start"
               }`}
-              disabled={isLoading}
             >
-              Send
-            </button>
-          </form>
+              {message.sender === "user" ? (
+                <>
+                  <div className="max-w-full sm:max-w-[80%] bg-blue-500 text-white p-3 rounded-lg">
+                    <MessageContent text={message.text} sender={message.sender} />
+                    <span className="text-xs opacity-70 mt-1 block">{message.timestamp}</span>
+                  </div>
+                  <FaUserCircle className="text-2xl text-blue-500 ml-2 self-end" />
+                </>
+              ) : (
+                <>
+                  <FaRobot className="text-2xl text-gray-600 mr-2 self-start" />
+                  <div className="max-w-full sm:max-w-[80%] bg-gray-100 text-gray-800 p-3 rounded-lg">
+                    <MessageContent text={message.text} sender={message.sender} />
+                    <span className="text-xs opacity-70 mt-1 block">{message.timestamp}</span>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+  
+          {isLoading && (
+            <div className="flex items-start gap-2">
+              <FaRobot className="text-2xl text-gray-600" />
+              <div className="bg-gray-100 rounded-lg p-3 max-w-full sm:max-w-[70%]">
+                <p className="text-sm text-gray-600">Thinking...</p>
+              </div>
+            </div>
+          )}
         </div>
+  
+        {/* Input Form */}
+        <form
+          onSubmit={handleSendMessage}
+          className="flex flex-col sm:flex-row items-stretch gap-2"
+        >
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring -2 focus:ring-blue-500 text-base"
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            className={`p-3 bg-blue-500 text-white rounded-lg text-base transition-colors ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            }`}
+            disabled={isLoading}
+          >
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );

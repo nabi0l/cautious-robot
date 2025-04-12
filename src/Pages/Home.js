@@ -1,4 +1,3 @@
-// src/components/Home.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Hamburger from "hamburger-react";
@@ -23,35 +22,40 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen relative">
-      <div className="upper flex justify-between items-center p-4 bg-white shadow-md">
-        <div className="left relative">
+    <div className="min-h-screen flex flex-col">
+      {/* Top Bar */}
+      <div className="flex justify-between items-center p-4 bg-white shadow-md fixed w-full top-0 z-40">
+        <div className="relative z-50">
           <Hamburger toggled={isSideBarOpen} toggle={toggleSideBar} />
           {isSideBarOpen && (
-            <div className="absolute left-0 top-12 z-50">
+            <div className="absolute left-0 top-12">
               <SideBar />
             </div>
           )}
         </div>
-        <div className="right">
-          <FaUserCircle className="text-2xl" />
-        </div>
+        <FaUserCircle className="text-3xl text-gray-700" />
       </div>
 
-      <div className="main flex flex-col justify-center items-center h-[calc(100vh-64px)]">
-        <h2 className="text-2xl mb-8">Hello! How can I help you today?</h2>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col justify-center items-center px-4 pt-20 text-center">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-6">
+          Hello! How can I help you today?
+        </h2>
 
-        <form onSubmit={handleSendMessage} className="input flex gap-2 w-full max-w-2xl px-4">
+        <form
+          onSubmit={handleSendMessage}
+          className="flex flex-col sm:flex-row items-center w-full max-w-2xl gap-4 sm:gap-2"
+        >
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message here...."
-            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Type your message here..."
+            className="w-full flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
           >
             Send
           </button>
