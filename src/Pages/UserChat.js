@@ -36,7 +36,7 @@ const UserChat = () => {
       id: Date.now(),
       text: message,
       sender: "user",
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
     };
 
     setMessages([userMessage]);
@@ -69,7 +69,7 @@ const UserChat = () => {
         id: Date.now() + 1,
         text: "I apologize, but I encountered an error. Please try again.",
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString(),
+        timestamp: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
       };
       setMessages((currentMessages) => [...currentMessages, errorMessage]);
     } finally {
@@ -84,7 +84,10 @@ const UserChat = () => {
         id: Date.now(),
         text: newMessage,
         sender: "user",
-        timestamp: new Date().toLocaleTimeString(),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
 
       setMessages((currentMessages) => [...currentMessages, userMessage]);

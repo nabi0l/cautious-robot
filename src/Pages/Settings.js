@@ -1,27 +1,30 @@
+// src/Settings.js
 import React, { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import Hamburger from "hamburger-react";
-import SideBar from "./SideBar"; // Adjust path if needed
+import SideBar from "./SideBar";
 
 const Settings = () => {
+  const [theme, setTheme] = useState("light");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [theme, setTheme] = useState("light");
-  const [profileImage, setProfileImage] = useState(null);
   const [isSideBarOpen, setIsSidebarOpen] = useState(false);
 
+  // Load saved settings
   useEffect(() => {
     const storedSettings = JSON.parse(localStorage.getItem("settings"));
     if (storedSettings) {
       setUsername(storedSettings.username || "");
       setEmail(storedSettings.email || "");
       setNotificationsEnabled(storedSettings.notificationsEnabled ?? true);
-      setTheme(storedSettings.theme || "light");
-      setProfileImage(storedSettings.profileImage || null);
+      if (storedSettings.theme) {
+        setTheme(storedSettings.theme);
+      }
     }
   }, []);
 
+  // Save settings
   const handleSave = (e) => {
     e.preventDefault();
     const newSettings = {
@@ -29,48 +32,36 @@ const Settings = () => {
       email,
       notificationsEnabled,
       theme,
-      profileImage,
     };
     localStorage.setItem("settings", JSON.stringify(newSettings));
+    alert("Settings saved!");
   };
 
+  // Reset settings
   const handleReset = () => {
     setUsername("");
     setEmail("");
     setNotificationsEnabled(true);
     setTheme("light");
-    setProfileImage(null);
     localStorage.removeItem("settings");
+    alert("Settings reset!");
   };
 
+  // Toggle sidebar
   const toggleSideBar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  useEffect(() => {
-    document.documentElement.className = theme === "dark" ? "dark" : "";
-  }, [theme]);
-
   return (
-    <div
-      className={`min-h-screen ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-black"
-      } flex flex-col`}
-    >
-      <div className="flex justify-between items-center p-4 bg-white shadow-md fixed w-full top-0 z-40">
-        <div className="relative z-50 ">
-          <Hamburger toggled={isSideBarOpen} toggle={toggleSideBar} />
+    <div className="min-h-screen flex flex-col bg-gray-50 text-black">
+      {/* Top Navbar */}
+      <div className="flex justify-between items-center p-4 shadow-md fixed w-full top-0 z-40 bg-white">
+        <div className="relative z-50">
+          <Hamburger
+            toggled={isSideBarOpen}
+            toggle={toggleSideBar}
+            color="#000"
+          />
           {isSideBarOpen && (
             <div className="absolute left-0 top-12">
               <SideBar />
@@ -80,30 +71,17 @@ const Settings = () => {
         <FaUserCircle className="text-3xl text-gray-700" />
       </div>
 
+      {/* Main Form */}
       <div className="pt-24 px-4 sm:px-8 md:px-12">
         <form
           onSubmit={handleSave}
           className="space-y-6 mx-auto max-w-xl px-4 sm:px-8 md:px-12"
         >
-          {/* Profile Picture */}
+          {/* Profile Picture Display Only */}
           <div className="text-center">
-            {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Profile"
-                className="w-24 h-24 mx-auto rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-24 h-24 mx-auto rounded-full bg-gray-300 flex items-center justify-center">
-                <FaUserCircle className="text-4xl text-white" />
-              </div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mt-2 text-sm"
-            />
+            <div className="w-24 h-24 mx-auto rounded-full bg-gray-300 flex items-center justify-center">
+              <FaUserCircle className="text-4xl text-white" />
+            </div>
           </div>
 
           {/* Username */}
@@ -141,8 +119,8 @@ const Settings = () => {
             <label>Enable Notifications</label>
           </div>
 
-          {/* Theme */}
-          <div>
+          {/* Theme Selector */}
+          {/* <div>
             <label className="block text-sm font-medium mb-1">Theme</label>
             <select
               value={theme}
@@ -152,7 +130,7 @@ const Settings = () => {
               <option value="light">Light</option>
               <option value="dark">Dark</option>
             </select>
-          </div>
+          </div> */}
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">

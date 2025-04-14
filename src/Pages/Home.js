@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Hamburger from "hamburger-react";
 import { FaUserCircle } from "react-icons/fa";
@@ -22,9 +22,9 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50 text-black">
       {/* Top Bar */}
-      <div className="flex justify-between items-center p-4 bg-white shadow-md fixed w-full top-0 z-40">
+      <div className="flex justify-between items-center p-4 shadow-md fixed w-full top-0 z-40 bg-white">
         <div className="relative z-50">
           <Hamburger toggled={isSideBarOpen} toggle={toggleSideBar} />
           {isSideBarOpen && (
@@ -51,7 +51,7 @@ const Home = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message here..."
-            className="w-full flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+            className="w-full flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black text-base"
           />
           <button
             type="submit"
