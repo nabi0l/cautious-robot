@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 import Hamburger from "hamburger-react";
 import { FaUserCircle } from "react-icons/fa";
 import SideBar from "./SideBar";
-
+import '../CSS/output.css';
 const Home = () => {
-  const [isSideBarOpen, setIsSidebarOpen] = useState(false);
-  const [message, setMessage] = useState("");
+   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const toggleSideBar = () => {
-    setIsSidebarOpen(!isSideBarOpen);
-  };
+ 
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -23,19 +20,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-black">
-      {/* Top Bar */}
-      <div className="flex justify-between items-center p-4 shadow-md fixed w-full top-0 z-40 bg-white">
-        <div className="relative z-50">
-          <Hamburger toggled={isSideBarOpen} toggle={toggleSideBar} />
-          {isSideBarOpen && (
-            <div className="absolute left-0 top-12">
-              <SideBar />
-            </div>
-          )}
-        </div>
-        <FaUserCircle className="text-3xl text-gray-700" />
-      </div>
-
+      
       {/* Main Content */}
       <div className="flex-1 flex flex-col justify-center items-center px-4 pt-20 text-center">
         <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-6">
