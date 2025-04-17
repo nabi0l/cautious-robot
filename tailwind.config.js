@@ -1,19 +1,25 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
-      animation: {
-        "fade-in": "fadeIn 0.3s ease-in-out",
-      },
-      keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+      colors: {
+        light: {
+          primary: "#EEEEEE",
+          secondary: "#EFF3EA",
+          accent: "#053B50",
+          border: "#2D4356",
+          text: "#053B50",
+        },
+        dark: {
+          primary: "#2D4356",
+          secondary: "#1E2A3A",
+          accent: "#053B50",
+          border: "#053B50",
+          text: "#FCF8F3",
         },
       },
     },
   },
   plugins: [],
 };
-

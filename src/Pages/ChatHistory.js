@@ -1,30 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// src/Pages/ChatHistory.js
+
+import {getChatHistory, saveChatHistory, clearChatHistory} from '../utilis/chatHistory';
+import React from 'react';
 
 const ChatHistory = () => {
-  const { id } = useParams();
-  const [chatHistory, setChatHistory] = useState([]);
-
-  useEffect(() => {
-    const storedChats = JSON.parse(localStorage.getItem("chatHistory")) || [];
-    setChatHistory(storedChats[id] || []);
-  }, [id]);
-
+  // Your chat history logic here
   return (
     <div>
-      <h2>Chat History</h2>
-      <div>
-        {chatHistory.map((msg, index) => (
-          <div
-            key={index}
-            className={msg.sender === "bot" ? "bot-message" : "user-message"}
-          >
-            {msg.text}
-          </div>
-        ))}
-      </div>
+      <h1>Chat History</h1>
+      {/* Render chat history here */}
     </div>
   );
 };
 
-export default ChatHistory;
+export default ChatHistory; // Ensure this line is present
