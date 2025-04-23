@@ -19,5 +19,4 @@ export const ThemeToggle = () => {
   );
 };
 
-// Add default export for backward compatibility
 export default ThemeToggle;

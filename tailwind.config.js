@@ -5,18 +5,18 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          primary: "#EEEEEE",
-          secondary: "#EFF3EA",
-          accent: "#053B50",
-          border: "#2D4356",
-          text: "#053B50",
+          primary: "#F2F9FF",
+          secondary: "#F2F9FF",
+          accent: "#1C325B",
+          border: "#1C325B",
+          text: "#1C325B",
         },
         dark: {
           primary: "#2D4356",
           secondary: "#1E2A3A",
-          accent: "#053B50",
-          border: "#053B50",
-          text: "#FCF8F3",
+          accent: "#1C325B",
+          border: "#1C325B",
+          text: "#F2F9FF",
         },
       },
     },

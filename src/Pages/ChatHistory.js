@@ -1,6 +1,6 @@
 // src/Pages/ChatHistory.js
 
-import {getChatHistory, saveChatHistory, clearChatHistory} from '../utilis/chatHistory';
+import {getChatHistory, saveChatHistory, clearChatHistory, CHAT_HISTORY_KEY} from '../utilis/chatHistory';
 import React from 'react';
 
 const ChatHistory = () => {

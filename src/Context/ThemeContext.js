@@ -16,11 +16,21 @@ export const ThemeProvider = ({ children }) => {
   };
 
   // Initialize theme from localStorage
+
+  const [themeLoaded, setThemeLoaded] = useState(false);
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     setTheme(savedTheme);
     document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    setThemeLoaded(true);
   }, []);
+
+  if (!themeLoaded) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#EEEEEE] dark:bg-[#2D4356]"></div>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

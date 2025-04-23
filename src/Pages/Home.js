@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { FiSend } from "react-icons/fi";
 import { useTheme } from "../Context/ThemeContext";
 import SideBar from "./SideBar";
-import { FaBars } from "react-icons/fa";
 
 import '../CSS/output.css';
 
@@ -11,11 +10,13 @@ const Home = () => {
   const { theme } = useTheme();
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(e);
+    }
+  }
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -28,22 +29,16 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#2D4356] text-gray-900 dark:text-gray-100 transition-colors duration-200 flex">
-      <div className="flex-1 flex flex-col">
-        {/* Mobile header */}
-        <header className="p-4 flex items-center md:hidden">
-          <button
-            onClick={toggleSidebar}
-            className="p-2 rounded-md focus:outline-none text-[#053B50] dark:text-white"
-          >
-            <FaBars className="text-xl" />
-          </button>
-        </header>
-
-        <div className="flex-1 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F2F9FF] dark:bg-[#2D4356] text-gray-900 dark:text-gray-100 transition-colors duration-200 flex">
+      {/* Sidebar */}
+      <SideBar />
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col ml-16 md:ml-64 transition-all duration-300"> {/* Adjust margin based on sidebar width */}
+        <div className="flex-1 flex items-center justify-center p-4 pt-20">
           <div className="w-full max-w-3xl px-6">
             <div className="text-center mb-10">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#053B50] to-[#2D4356] bg-clip-text text-transparent">
+              <h1 className="text-4xl text-[#1C325B] md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#053B50] to-[#2D4356] bg-clip-text text-transparent">
                 Your Chat Assistance
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -59,6 +54,7 @@ const Home = () => {
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder="Type your message here..."
                   className="w-full min-h-[120px] p-4 border-2 border-[#2D4356] dark:border-[#053B50] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#053B50] bg-white dark:bg-[#1E2A3A] text-black dark:text-white transition-all duration-200 resize-none"
                   rows={4}
