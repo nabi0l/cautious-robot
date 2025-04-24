@@ -33,3 +33,14 @@ export const clearChatHistory = () => {
   localStorage.removeItem(CHAT_HISTORY_KEY);
   window.dispatchEvent(new Event("storage")); // Notify listeners
 };
+
+export const deleteSingleChat=(chatId)=>{
+  const existingHistory = getChatHistory();
+
+  const updateHistory = existingHistory.filter(
+    chat=> chat.messages[0]?.id !== chatId
+  );
+
+  localStorage. setItem(CHAT_HISTORY_KEY, JSON.stringify(updateHistory))
+  window.dispatchEvent(new Event('storage'))
+}

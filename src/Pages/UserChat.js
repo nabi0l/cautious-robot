@@ -22,6 +22,7 @@ import "katex/dist/katex.min.css";
 import { useTheme } from "../Context/ThemeContext";
 import { getChatHistory, saveChatHistory } from "../utilis/chatHistory";
 import useMediaQuery from "../hooks/useMediaQuery";
+import UserAvatar from "../Componets/UserAvatar";
 
 const UserChat = () => {
   const { theme } = useTheme();
@@ -57,15 +58,21 @@ const UserChat = () => {
       return;
     }
 
+    if(isNewChat && !initialMessage){
+      setMessages([]);
+      localStorage.removeItem('chat-messages');
+      return;
+    }
+
     if (historyMessages) {
       setMessages(historyMessages);
       return;
     }
 
-    const storedMessages =
-      JSON.parse(localStorage.getItem("chat-messages")) || [];
+    // const storedMessages =
+    //   JSON.parse(localStorage.getItem("chat-messages")) || [];
 
-    if (isNewChat) {
+    
       if (initialMessage) {
         const userMessage = {
           id: Date.now(),
@@ -79,26 +86,10 @@ const UserChat = () => {
         };
         setMessages([userMessage]);
         getAIResponse(initialMessage);
-      } else {
-        setMessages([]);
+        return;
       }
-      localStorage.removeItem("chat-messages");
-    } else if (storedMessages.length > 0) {
+      const storedMessages=JSON.parse(localStorage.getItem('chat-messages'))||[];
       setMessages(storedMessages);
-    } else if (initialMessage) {
-      const userMessage = {
-        id: Date.now(),
-        text: initialMessage,
-        sender: "user",
-        timestamp: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }),
-      };
-      setMessages([userMessage]);
-      getAIResponse(initialMessage);
-    }
 
     return () => {
       isMountedRef.current = false;
@@ -359,12 +350,12 @@ const UserChat = () => {
                   <div
                     className={`flex ${
                       message.sender === "user" ? "flex-row-reverse" : ""
-                    } ${isMobile ? "max-w-[85%]" : "max-w-[90%]"}`}
+                    } ${isMobile ? "max-w-[90%]" : "max-w-[80%]"}`}  
                   >
                     {/* Avatar */}
                     <div className="flex-shrink-0">
                       {message.sender === "user" ? (
-                        <FaUserCircle className="text-2xl text-[#053B50] dark:text-[#EEEEEE] w-8 h-8" />
+                        <UserAvatar size={8} />
                       ) : (
                         <div className="p-1 rounded-full border border-[#053B50] dark:border-[#EEEEEE] bg-white/50 dark:bg-[#1E2A3A]/50">
                           <FaRobot className="text-2xl text-[#053B50] dark:text-[#EEEEEE] w-6 h-6" />
@@ -382,7 +373,7 @@ const UserChat = () => {
                         className={`p-3 sm:p-4 rounded-2xl ${
                           message.sender === "user"
                             ? "bg-[#EEEEEE] dark:bg-[#053B50] border border-[#2D4356] dark:border-[#EEEEEE]"
-                            : "bg-[#EEEEEE] dark:bg-[#053B50] border border-[#2D4356] dark:border-[#EEEEEE]"
+                            : "bg-[#EEEEEE] dark:bg-[#053B50] border border-[#2D4356] dark:border-[#EEEEEE] max-w-[90%]"  
                         }`}
                       >
                         {editingMessageId === message.id &&
@@ -470,7 +461,7 @@ const UserChat = () => {
               <div className="p-1 rounded-full border border-[#053B50] dark:border-[#EEEEEE] bg-white/50 dark:bg-[#1E2A3A]/50">
                 <FaRobot className="text-2xl text-[#053B50] dark:text-[#EEEEEE] w-6 h-6" />
               </div>
-              <div className="p-4 max-w-[80%]">
+              <div className="p-4 max-w-[85%]">  {/* Changed from 80% to 75% */}
                 <div className="flex items-center gap-2">
                   <ImSpinner8 className="animate-spin text-[#053B50] dark:text-[#EEEEEE]" />
                   <p className="text-sm text-[#053B50] dark:text-[#EEEEEE]">
